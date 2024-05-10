@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -18,6 +19,10 @@ class Institution(models.Model):
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, default=1)
     categories = models.ManyToManyField(Category)
 
+    @classmethod
+    def count_institutions(cls):
+        return cls.objects.count()
+
 
 class Donation(models.Model):
     quantity = models.PositiveSmallIntegerField(help_text="Liczba worków")
@@ -31,3 +36,7 @@ class Donation(models.Model):
     pick_up_time = models.TimeField()
     pick_up_comment = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, blank=True)
+
+    @classmethod
+    def total_quantity_of_bags(cls):
+        return cls.objects.aggregate(total_quantity=Sum('quantity'))['total_quantity']
