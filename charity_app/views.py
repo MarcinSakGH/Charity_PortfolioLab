@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import View
-from .models import Donation, Institution
+from .models import Donation, Institution, Category
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -22,9 +23,12 @@ class LandingPageView(View):
         return render(request, 'index.html', context=ctx)
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request):
-        return render(request, 'form.html')
+        categories = Category.objects.all()
+        ctx = {'categories': categories}
+        return render(request, 'form.html', context=ctx)
 
 
 class LoginView(View):
