@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from .models import Donation, Institution
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -31,3 +32,15 @@ class LoginView(View):
 class RegisterView(View):
     def get(self, request):
         return render(request, 'register.html')
+    def post(self, request):
+        name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('password2')
+        if password != confirm_password:
+            error_message = 'Passwords do not match'
+            return render(request, 'register.html', {'error_message': error_message})
+        new_user = User.objects.create_user(
+            username=email, first_name=name, last_name=surname, email=email, password=password)
+        return redirect('login')
