@@ -19,6 +19,9 @@ class Institution(models.Model):
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, default=1)
     categories = models.ManyToManyField(Category)
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def count_institutions(cls):
         return cls.objects.count()
