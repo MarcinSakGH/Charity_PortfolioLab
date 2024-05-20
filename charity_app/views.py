@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.views.generic import View
+from django.views.generic import View, DetailView
 from .models import Donation, Institution, Category
 from django.contrib.auth.models import User
 
@@ -67,3 +67,8 @@ class RegisterView(View):
         new_user = User.objects.create_user(
             username=email, first_name=name, last_name=surname, email=email, password=password)
         return redirect('login')
+
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'userpage.html'
