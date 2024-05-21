@@ -253,6 +253,47 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 
+  const nextStepButtons = document.querySelectorAll(".next-step");
+  const checkboxes = document.querySelectorAll("input[name='categories']");
+  const institutions = document.querySelectorAll('.organisation')
+
+  console.log("Next step buttons:", nextStepButtons);
+  console.log("Checkboxes:", checkboxes);
+
+  nextStepButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      console.log('Button clicked!');
+      // check if correct step
+      const currentStep = button.closest('[data-step]')
+      if (currentStep.getAttribute('data-step') !== '1'){
+        return
+      }
+
+      // Get selected categories
+      let selectedCategories = [];
+      checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          selectedCategories.push(checkbox.value)
+        }
+      });
+
+      console.log('Selected categories:', selectedCategories);
+
+      // Filter institutions
+      institutions.forEach(institution =>{
+        const institutionCategories = institution.getAttribute('data-categories').split(',');
+        let match = selectedCategories.some(category =>
+          institutionCategories.includes(category)
+        )
+        if (match) {
+          institution.style.display = 'block';
+        }
+        else {
+          institution.style.display = 'none'
+        }
+      })
+    })
+  })
 
 });
 
