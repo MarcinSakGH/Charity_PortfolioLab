@@ -255,14 +255,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const nextStepButtons = document.querySelectorAll(".next-step");
   const checkboxes = document.querySelectorAll("input[name='categories']");
-  const institutions = document.querySelectorAll('.organisation')
+  const institutions = document.querySelectorAll('.form-group.organisation')
 
   console.log("Next step buttons:", nextStepButtons);
   console.log("Checkboxes:", checkboxes);
 
   nextStepButtons.forEach(button => {
     button.addEventListener('click', function () {
-      console.log('Button clicked!');
       // check if correct step
       const currentStep = button.closest('[data-step]')
       if (currentStep.getAttribute('data-step') !== '1'){
@@ -277,12 +276,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
-      console.log('Selected categories:', selectedCategories);
+      console.log('selectedcategories:', selectedCategories)
 
       // Filter institutions
       institutions.forEach(institution =>{
+        console.log('Instytucja:', institution)
+        console.log('Kategorie instytucji:', institution.getAttribute('data-categories'))
         const institutionCategories = institution.getAttribute('data-categories').split(',');
-        let match = selectedCategories.some(category =>
+        let match = selectedCategories.every(category =>
           institutionCategories.includes(category)
         )
         if (match) {
