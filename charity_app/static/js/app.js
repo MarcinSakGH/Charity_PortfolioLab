@@ -279,12 +279,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
-      console.log('selectedcategories:', selectedCategories)
 
       // Filter institutions
       institutions.forEach(institution =>{
-        console.log('Instytucja:', institution)
-        console.log('Kategorie instytucji:', institution.getAttribute('data-categories'))
+        // console.log('Instytucja:', institution)
+        // console.log('Kategorie instytucji:', institution.getAttribute('data-categories'))
         const institutionCategories = institution.getAttribute('data-categories').split(',');
         let match = selectedCategories.every(category =>
           institutionCategories.includes(category)
@@ -303,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // number of bags and what categories
         const numberOfBags = document.querySelector('input[name="bags"]').value
         const summaryText = document.getElementById('summary-text')
+        console.log('Lasice:', summaryText )
         summaryText.textContent = `${numberOfBags} ${correctWordForm(numberOfBags)} z kategorii  ${selectedCategories}`
 
         const chosen_institution = document.querySelector('input[name="institution"]:checked')
@@ -319,6 +319,22 @@ document.addEventListener("DOMContentLoaded", function() {
             return " worków";
             }
         }
+        const addressInput = document.querySelector('input[name="address"]').value
+        const address = document.querySelector('.form-section--column ul li')
+        address.textContent = `${addressInput}`
+
+        const cityInput = document.querySelector('input[name="city"]').value
+        const city = document.querySelectorAll('.form-section--column ul li')[1]
+        city.textContent = `${cityInput}`
+
+        const postalCodeInput = document.querySelector('input[name="postcode"]').value
+        const postalCode = document.querySelectorAll('.form-section--column ul li')[2]
+        postalCode.textContent = `${postalCodeInput}`
+
+        const phoneNumberInput = document.querySelector('input[name="phone"]').value
+        const phoneNumber = document.querySelectorAll('.form-section--column ul li')[3]
+        phoneNumber.textContent = `${phoneNumberInput}`
+
       }
 
     })
