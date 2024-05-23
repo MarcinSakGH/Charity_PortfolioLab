@@ -31,6 +31,25 @@ class AddDonationView(LoginRequiredMixin, View):
         ctx = {'categories': categories, 'institutions': institutions}
         return render(request, 'form.html', context=ctx)
 
+    def post(self, request):
+        quantity = int(request.POST.get('bags'))
+        selected_categories = request.POST.getlist('categories')
+        categories = Category.objects.filter(name__in=selected_categories)
+        institution_id = request.POST.get('institution')
+        institution = Institution.objects.get(id=institution_id)
+        new_donation = Donation(quantity=quantity, institution=institution, user=request.user,
+                                address=request.POST.get('address'),
+                                city=request.POST.get('city'), zip_code=request.POST.get('postcode'),
+                                pick_up_date=request.POST.get('date'), pick_up_time=request.POST.get('time'),
+                                pick_up_comment=request.POST.get('more_info'))
+        new_donation.save()
+
+        new_donation.categories.set(categories)
+
+        new_donation.save()
+
+        return redirect('form-confirmation')
+
 
 class LoginView(View):
     def get(self, request):
@@ -72,3 +91,8 @@ class RegisterView(View):
 class UserDetailView(DetailView):
     model = User
     template_name = 'userpage.html'
+
+
+class FormConfirmationView(View):
+    def get(self, request):
+        return render(request, 'form-confirmation.html')

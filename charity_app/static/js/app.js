@@ -210,8 +210,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       });
 
-      // Form submit
-      this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
+      // // Form submit
+      // this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
     }
 
     /**
