@@ -302,13 +302,12 @@ document.addEventListener("DOMContentLoaded", function() {
         // number of bags and what categories
         const numberOfBags = document.querySelector('input[name="bags"]').value
         const summaryText = document.getElementById('summary-text')
-        console.log('Lasice:', summaryText )
         summaryText.textContent = `${numberOfBags} ${correctWordForm(numberOfBags)} z kategorii  ${selectedCategories}`
 
         const chosen_institution = document.querySelector('input[name="institution"]:checked')
         const institutionName = chosen_institution.parentNode.querySelector('.title').textContent
         const summaryInstitution = document.getElementById('summary-institution')
-        summaryInstitution.textContent = `Dla fundacji "${institutionName}"`
+        summaryInstitution.textContent = `Dla organizacji "${institutionName}"`
         function correctWordForm(number_of_bags) {
           number_of_bags = Math.abs(numberOfBags)
           if (number_of_bags === 1) {
@@ -334,6 +333,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const phoneNumberInput = document.querySelector('input[name="phone"]').value
         const phoneNumber = document.querySelectorAll('.form-section--column ul li')[3]
         phoneNumber.textContent = `${phoneNumberInput}`
+
+        const pickupDateInput = document.querySelector('input[name="date"]').value
+        const pickupDate = document.querySelectorAll('.form-section--column.date ul li')[0]
+        pickupDate.textContent = `${pickupDateInput}`
+
+        const pickupTimeInput = document.querySelector('input[name="time"]').value
+        const pickupTime = document.querySelectorAll('.form-section--column.date ul li')[1]
+        pickupTime.textContent = `${pickupTimeInput}`
+
+        const more_infoInput = document.querySelector('textarea[name="more_info"]').value
+        console.log('moreinfo', more_infoInput)
+        const moreInfo = document.querySelectorAll('.form-section--column.date ul li')[2]
+        moreInfo.textContent = `${more_infoInput}`
 
       }
 
