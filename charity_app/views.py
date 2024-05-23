@@ -92,6 +92,11 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'userpage.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['donations'] = Donation.objects.filter(user=self.request.user)
+        return context
+
 
 class FormConfirmationView(View):
     def get(self, request):

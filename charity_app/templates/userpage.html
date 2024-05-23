@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block header %}
    <header class="header--main-page">
@@ -10,9 +10,31 @@
         <div class="slogan--item">
           <h1>
             Zalogowany użytkownik: {{ user.username }}<br />
-              {{ user.first_name }} {{ user.last_name }}
+{#              {{ user.first_name }} {{ user.last_name }}#}
           </h1>
         </div>
       </div>
     </header>
+
+
 {% endblock header %}
+
+{% block content %}
+
+<h1 class="donation-header">Przekazane dary:</h1>
+<ul class="donation-list">
+    {% for donation in donations %}
+        <li class="donation-item">Dary dla: {{ donation.institution }}</li>
+        <ul class="donation-sublist">
+            <li class="donation-subitem">Liczba przekazanych worków: {{ donation.quantity }}</li>
+            <li class="donation-subitem">Kategorie przekazanych darów:
+                {% for category in donation.categories.all %}
+                {{ category.name }},
+                {% endfor %}
+            </li>
+        <li class="donation-subitem">Data odbioru: {{ donation.pick_up_date|date:"j F Y" }}</li>
+        </ul>
+    {% endfor %}
+</ul>
+
+{% endblock content%}
