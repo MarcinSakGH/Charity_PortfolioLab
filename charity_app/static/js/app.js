@@ -264,9 +264,12 @@ document.addEventListener("DOMContentLoaded", function() {
     button.addEventListener('click', function () {
       // check if correct step
       const currentStep = button.closest('[data-step]')
-      if (currentStep.getAttribute('data-step') !== '1'){
-        return
-      }
+
+
+
+      // if (currentStep.getAttribute('data-step') !== '1'){
+      //   return
+      // }
 
       // Get selected categories
       let selectedCategories = [];
@@ -293,6 +296,31 @@ document.addEventListener("DOMContentLoaded", function() {
           institution.style.display = 'none'
         }
       })
+
+
+
+      if (currentStep.getAttribute('data-step') === '4'){
+        // number of bags and what categories
+        const numberOfBags = document.querySelector('input[name="bags"]').value
+        const summaryText = document.getElementById('summary-text')
+        summaryText.textContent = `${numberOfBags} ${correctWordForm(numberOfBags)} z kategorii  ${selectedCategories}`
+
+        const chosen_institution = document.querySelector('input[name="institution"]:checked')
+        const institutionName = chosen_institution.parentNode.querySelector('.title').textContent
+        const summaryInstitution = document.getElementById('summary-institution')
+        summaryInstitution.textContent = `Dla fundacji "${institutionName}"`
+        function correctWordForm(number_of_bags) {
+          number_of_bags = Math.abs(numberOfBags)
+          if (number_of_bags === 1) {
+            return " worek";
+          } else if (number_of_bags < 5) {
+            return " worki";
+          } else {
+            return " worków";
+            }
+        }
+      }
+
     })
   })
 
