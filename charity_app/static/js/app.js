@@ -352,6 +352,48 @@ document.addEventListener("DOMContentLoaded", function() {
     })
   })
 
+  const buttons = document.querySelectorAll('button[data-donation-id]')
+
+  buttons.forEach(button => {
+  button.addEventListener('click', function () {
+    console.log('Button clicked')
+    const donationId = this.dataset.donationId;
+    const donationItem = button.closest('.donation-item');
+    const buttonLabel = button.textContent.trim();
+    let is_taken;
+
+    if (buttonLabel === "Oznacz jako 'odebrane'") {
+      is_taken = true;
+    } else {
+      is_taken = false;
+    }
+
+    if (donationItem) {
+      donationItem.style.color = 'lightgrey'
+      donationItem.parentNode.appendChild(donationItem)
+    }
+
+    fetch(`/update_donation_status/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        'donation_id': donationId,
+        'is_taken': is_taken
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+    }).then(response => {
+        if(response.ok) {
+            location.reload();
+        } else {
+            // Handle error here
+            console.log('Error updating donation status');
+        }
+    });
+  });
+});
+
 });
 
 

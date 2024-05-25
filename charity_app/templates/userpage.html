@@ -24,17 +24,25 @@
 <h1 class="donation-header">Przekazane dary:</h1>
 <ul class="donation-list">
     {% for donation in donations %}
-        <li class="donation-item">Dary dla: {{ donation.institution }}</li>
-        <ul class="donation-sublist">
-            <li class="donation-subitem">Liczba przekazanych worków: {{ donation.quantity }}</li>
-            <li class="donation-subitem">Kategorie przekazanych darów:
-                {% for category in donation.categories.all %}
-                {{ category.name }},
-                {% endfor %}
-            </li>
-        <li class="donation-subitem">Data odbioru: {{ donation.pick_up_date|date:"j F Y" }}</li>
-        </ul>
+    <li class="donation-item {% if donation.is_taken %}is-taken{% else %}not_taken{% endif %}">Dary dla: {{ donation.institution }}
+            <ul class="donation-sublist">
+                <li class="donation-subitem">Liczba przekazanych worków: {{ donation.quantity }}</li>
+                <li class="donation-subitem">Kategorie przekazanych darów:
+                    {% for category in donation.categories.all %}
+                    {{ category.name }},
+                    {% endfor %}
+                </li>
+            <li class="donation-subitem">Planowana data odbioru: {{ donation.pick_up_date|date:"j F Y" }}</li>
+            <li class="donation-subitem"><button type="button" data-donation-id="{{ donation.id }}">
+                {% if donation.is_taken  %}
+                    Oznacz jako 'do odbioru'
+                {% else %}
+                    Oznacz jako 'odebrane'
+                {% endif %}
+            </button></li>
+            </ul>
     {% endfor %}
 </ul>
 
 {% endblock content%}
+
