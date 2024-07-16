@@ -7,6 +7,9 @@
     <title>Document</title>
       {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+      <script type="text/javascript">
+         const csrftoken = "{{ csrf_token }}";
+      </script>
   </head>
     <body>
 

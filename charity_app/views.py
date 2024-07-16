@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import json
 from django.contrib import messages
 from django.views.generic import View, DetailView
 from .models import Donation, Institution, Category
@@ -92,7 +94,33 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'userpage.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['donations'] = Donation.objects.filter(user=self.request.user).order_by('is_taken')
+        return context
+
+
+
 
 class FormConfirmationView(View):
     def get(self, request):
         return render(request, 'form-confirmation.html')
+
+
+class UpdateDonationStatus(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        donation_id = data['donation_id']
+        is_taken = data['is_taken']
+
+        if donation_id is not None:
+            try:
+                donation = Donation.objects.get(id=donation_id)
+                donation.is_taken = is_taken
+                donation.save()
+
+                return JsonResponse({'status': 'success'}, status=200)
+            except Donation.DoesNotExist:
+                return JsonResponse({'errot': 'donation not found'}, status=404)
+        else:
+            return JsonResponse({'error': 'Invalid or missing donation id'}, status=400)
