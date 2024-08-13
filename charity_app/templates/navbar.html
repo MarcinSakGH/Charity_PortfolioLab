@@ -6,7 +6,7 @@
                 Witaj {{ request.user.username }}
                 <ul class="dropdown">
                   <li><a href="{% url 'user-details' user.id %}">Profil</a></li>
-                  <li><a href="#">Ustawienia</a></li>
+                  <li><a href="{% url 'user-update' user.id %}">Ustawienia</a></li>
                     {% if request.user.is_superuser %}
                         <li><a href="{% url 'admin:index' %}">Panel administracyjny</a></li>
                     {% endif %}

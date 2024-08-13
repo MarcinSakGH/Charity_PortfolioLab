@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<header class="header--main-page">
+
+    {% include 'navbar.html' %}
+
+  <div class="slogan container container--90">
+    <div class="slogan--item">
+      <h1>
+        Edit user {{request.user.username}}
+      </h1>
+      <form action="" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Update">
+      </form>
+
+      <a href="{% url 'password_change' %}">Zmień hasło</a>
+    </div>
+  </div>
+</header>
+
+{% endblock header %}

@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 import json
 from django.contrib import messages
-from django.views.generic import View, DetailView
+from django.views.generic import View, DetailView, UpdateView
 from .models import Donation, Institution, Category
 from django.contrib.auth.models import User
+from .forms import UserUpdateForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -99,8 +101,19 @@ class UserDetailView(DetailView):
         context['donations'] = Donation.objects.filter(user=self.request.user).order_by('is_taken')
         return context
 
-
-
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'user_edit.html'
+    success_url = reverse_lazy('landing')
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+    
+    def get_object(self, queryset=None):
+        return self.request.user
 
 class FormConfirmationView(View):
     def get(self, request):
